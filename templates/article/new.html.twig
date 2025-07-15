@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Article{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <h1>✏️ Create New Article</h1>
+        
+        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-3">
+                    {{ form_label(form.title, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.title) }}
+                    {{ form_errors(form.title) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.summary, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.summary) }}
+                    {{ form_errors(form.summary) }}
+                    <div class="form-text">Optional: A brief summary that appears in article listings</div>
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.content, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.content) }}
+                    {{ form_errors(form.content) }}
+                </div>
+
+                <div class="mb-3 form-check">
+                    {{ form_widget(form.published, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(form.published, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                    {{ form_errors(form.published) }}
+                    <div class="form-text">Check to make this article visible to other users</div>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <button type="submit" class="btn btn-success">
+                    💾 Create Article
+                </button>
+                <a href="{{ path('app_dashboard') }}" class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+            </div>
+        </div>
+        
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

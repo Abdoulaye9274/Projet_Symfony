@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Articles{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>📚 All Articles</h1>
+    {% if app.user %}
+        <a href="{{ path('app_article_new') }}" class="btn btn-primary">
+            ➕ New Article
+        </a>
+    {% endif %}
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form method="get" class="d-flex">
+            <input type="search" name="search" value="{{ search }}" placeholder="Search articles..." class="form-control me-2">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </form>
+    </div>
+</div>
+
+{% if articles|length > 0 %}
+    <div class="row">
+        {% for article in articles %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ path('app_article_show', {id: article.id}) }}" class="text-decoration-none">
+                                {{ article.title }}
+                            </a>
+                        </h5>
+                        {% if article.summary %}
+                            <p class="card-text">{{ article.summary|slice(0, 150) }}{% if article.summary|length > 150 %}...{% endif %}</p>
+                        {% else %}
+                            <p class="card-text">{{ article.content|slice(0, 150)|striptags }}{% if article.content|length > 150 %}...{% endif %}</p>
+                        {% endif %}
+                        <small class="text-muted">
+                            By {{ article.author.fullName }} • 
+                            {{ article.createdAt|date('M d, Y') }}
+                            {% if article.updatedAt %}
+                                • Updated {{ article.updatedAt|date('M d, Y') }}
+                            {% endif %}
+                        </small>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="{{ path('app_article_show', {id: article.id}) }}" class="btn btn-outline-primary btn-sm">
+                            Read More
+                        </a>
+                        {% if app.user and article.author == app.user %}
+                            <a href="{{ path('app_article_edit', {id: article.id}) }}" class="btn btn-outline-secondary btn-sm">
+                                Edit
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="text-center">
+        <div class="alert alert-info">
+            {% if search %}
+                <h4>No articles found for "{{ search }}"</h4>
+                <p>Try adjusting your search terms or <a href="{{ path('app_article_index') }}">browse all articles</a>.</p>
+            {% else %}
+                <h4>No articles available</h4>
+                <p>Be the first to share your thoughts!</p>
+                {% if app.user %}
+                    <a href="{{ path('app_article_new') }}" class="btn btn-primary">Create First Article</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

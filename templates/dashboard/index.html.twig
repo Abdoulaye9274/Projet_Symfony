@@ -1,0 +1,174 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>👋 Welcome back, {{ app.user.firstName }}!</h1>
+            <a href="{{ path('app_article_new') }}" class="btn btn-primary">
+                ➕ New Article
+            </a>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">📝 Your Articles</h5>
+                        <h2 class="text-primary">{{ user_articles|length }}</h2>
+                        <p class="card-text">Total articles written</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">🌟 Published</h5>
+                        <h2 class="text-success">
+                            {% set published_count = 0 %}
+                            {% for article in user_articles %}
+                                {% if article.published %}
+                                    {% set published_count = published_count + 1 %}
+                                {% endif %}
+                            {% endfor %}
+                            {{ published_count }}
+                        </h2>
+                        <p class="card-text">Live articles</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">📄 Drafts</h5>
+                        <h2 class="text-warning">{{ user_articles|length - published_count }}</h2>
+                        <p class="card-text">Unpublished articles</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">📚 Your Articles</h5>
+                <a href="{{ path('app_article_new') }}" class="btn btn-sm btn-outline-primary">
+                    ➕ Add New
+                </a>
+            </div>
+            <div class="card-body">
+                {% if user_articles|length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for article in user_articles %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ path('app_article_show', {id: article.id}) }}" class="text-decoration-none">
+                                                {{ article.title|slice(0, 50) }}{% if article.title|length > 50 %}...{% endif %}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {% if article.published %}
+                                                <span class="badge bg-success">Published</span>
+                                            {% else %}
+                                                <span class="badge bg-warning text-dark">Draft</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">{{ article.createdAt|date('M d, Y') }}</small>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{{ path('app_article_show', {id: article.id}) }}" class="btn btn-outline-primary btn-sm">
+                                                    👁️ View
+                                                </a>
+                                                <a href="{{ path('app_article_edit', {id: article.id}) }}" class="btn btn-outline-secondary btn-sm">
+                                                    ✏️ Edit
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <h5>No articles yet</h5>
+                        <p class="text-muted">Start writing your first article!</p>
+                        <a href="{{ path('app_article_new') }}" class="btn btn-primary">
+                            ✏️ Create Your First Article
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">🔥 Recent Articles</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_articles|length > 0 %}
+                    {% for article in recent_articles %}
+                        <div class="mb-3 {% if not loop.last %}border-bottom pb-3{% endif %}">
+                            <h6>
+                                <a href="{{ path('app_article_show', {id: article.id}) }}" class="text-decoration-none">
+                                    {{ article.title|slice(0, 40) }}{% if article.title|length > 40 %}...{% endif %}
+                                </a>
+                            </h6>
+                            <small class="text-muted">
+                                By {{ article.author.fullName }} • {{ article.createdAt|date('M d') }}
+                            </small>
+                        </div>
+                    {% endfor %}
+                    
+                    <div class="text-center mt-3">
+                        <a href="{{ path('app_article_index') }}" class="btn btn-outline-primary btn-sm">
+                            View All Articles
+                        </a>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No recent articles available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">🚀 Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ path('app_article_new') }}" class="btn btn-primary">
+                        ✏️ Write New Article
+                    </a>
+                    <a href="{{ path('app_article_index') }}" class="btn btn-outline-primary">
+                        📚 Browse Articles
+                    </a>
+                    <hr>
+                    <small class="text-muted">
+                        <strong>💡 Tip:</strong> Use the API endpoints at <code>/api/articles</code> to access your data programmatically!
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

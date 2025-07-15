@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome - Symfony Interview Project{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="hero-section text-center mb-5">
+            <h1 class="display-4 mb-3">🎯 Symfony Interview Project</h1>
+            <p class="lead">
+                A comprehensive Symfony application showcasing all the key concepts for your technical interview!
+            </p>
+            
+            {% if not app.user %}
+                <div class="mt-4">
+                    <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg me-2">Get Started</a>
+                    <a href="{{ path('app_login') }}" class="btn btn-outline-primary btn-lg">Login</a>
+                </div>
+            {% else %}
+                <div class="mt-4">
+                    <a href="{{ path('app_dashboard') }}" class="btn btn-primary btn-lg me-2">Go to Dashboard</a>
+                    <a href="{{ path('app_article_new') }}" class="btn btn-success btn-lg">Create Article</a>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="features-section mb-5">
+            <h2 class="text-center mb-4">🚀 Features Implemented</h2>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">🔐 Authentication System</h5>
+                            <p class="card-text">Complete user registration, login/logout with Symfony Security Bundle</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">📝 CRUD Operations</h5>
+                            <p class="card-text">Full Create, Read, Update, Delete functionality for Articles</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">🗄️ Doctrine ORM</h5>
+                            <p class="card-text">Database management with entities, repositories, and relations</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">🎨 Twig Templates</h5>
+                            <p class="card-text">Responsive UI with Bootstrap, form handling, and template inheritance</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">🔌 REST API</h5>
+                            <p class="card-text">JSON API endpoints with serialization groups and validation</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">🧪 Unit Tests</h5>
+                            <p class="card-text">PHPUnit tests covering controllers, services, and entities</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if articles|length > 0 %}
+            <div class="recent-articles">
+                <h2 class="mb-4">📚 Recent Articles</h2>
+                <div class="row">
+                    {% for article in articles %}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="{{ path('app_article_show', {id: article.id}) }}" class="text-decoration-none">
+                                            {{ article.title }}
+                                        </a>
+                                    </h5>
+                                    {% if article.summary %}
+                                        <p class="card-text">{{ article.summary|slice(0, 100) }}{% if article.summary|length > 100 %}...{% endif %}</p>
+                                    {% endif %}
+                                    <small class="text-muted">
+                                        By {{ article.author.fullName }} • 
+                                        {{ article.createdAt|date('M d, Y') }}
+                                    </small>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a href="{{ path('app_article_show', {id: article.id}) }}" class="btn btn-outline-primary btn-sm">
+                                        Read More
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="text-center mt-3">
+                    <a href="{{ path('app_article_index') }}" class="btn btn-primary">View All Articles</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-state text-center">
+                <h3>No articles yet!</h3>
+                <p class="text-muted">Be the first to create an article.</p>
+                {% if app.user %}
+                    <a href="{{ path('app_article_new') }}" class="btn btn-primary">Create First Article</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
