@@ -1,6 +1,6 @@
 # 🎯 Symfony Interview Project
 
-Un projet Symfony complet créé pour démontrer toutes les compétences essentielles lors d'un entretien technique !
+Un projet Symfony complet créé pour démontrer toutes les compétences essentielles.
 
 ## 🚀 Fonctionnalités implémentées
 
@@ -206,7 +206,7 @@ symfony/
 └── phpunit.xml.dist     # Configuration tests
 ```
 
-## 🎯 Points clés pour l'entretien
+## 🎯 Points clés
 
 ### Architecture & Patterns
 - ✅ **MVC Pattern** : Séparation claire Controller/Model/View
@@ -238,17 +238,9 @@ symfony/
 - ✅ **Functional Tests** : Tests des contrôleurs
 - ✅ **Test Environment** : Configuration séparée pour les tests
 
-## 💡 Questions d'entretien courantes couvertes
 
-1. **"Comment gérez-vous l'authentification ?"** → SecurityController + User entity + firewall config
-2. **"Montrez-moi un CRUD complet"** → ArticleController avec toutes les opérations
-3. **"Comment validez-vous les données ?"** → Constraints Symfony + Form validation
-4. **"Pouvez-vous créer une API ?"** → ArticleApiController avec sérialisation
-5. **"Comment testez-vous votre code ?"** → Tests PHPUnit dans `/tests`
-6. **"Expliquez l'injection de dépendance"** → Services.yaml + constructeur injection
-7. **"Comment gérez-vous la base de données ?"** → Doctrine ORM + migrations + repositories
 
-## 🚀 Fonctionnalités bonus ajoutées
+## 🚀 Fonctionnalités ajoutées
 
 - 📱 **Design responsive** avec Bootstrap 5
 - 🔍 **Recherche d'articles** avec filtres
@@ -259,6 +251,5 @@ symfony/
 
 ---
 
-**Créé avec ❤️ pour réussir votre entretien Symfony !** 
 
 Ce projet démontre une maîtrise complète de l'écosystème Symfony et des meilleures pratiques de développement web moderne.
